@@ -80,8 +80,7 @@ public class UserController {
 
         if (removedUsers.isEmpty ())
             return "Nie znaleziono tego użytkownika..";
-        else
-            return "Użytkownik został usunięty! " + removedUsers;
+        else return "Użytkownik został usunięty! " + removedUsers;
     }
 
     private List<User> searchByAge(String wiek) {
