@@ -66,7 +66,7 @@ public class UserController {
         List<User> removedUsers = new ArrayList<> ();
 
         if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
-            return "Nie podałeś danych!";
+            return "Musisz podać dane użytkownika, którego chcesz usunąć";
         else if (!imie.isEmpty ()) {
             removedUsers = searchByFirstName (imie);
             removeUserFromList (removedUsers);
