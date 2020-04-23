@@ -23,7 +23,6 @@ public class UserController {
     String users() {
         List<User> users = userRepository.getAll ();
         String result = "";
-
         for (User user : users) {
             result += user.toString () + "</br>";
         }
@@ -46,11 +45,15 @@ public class UserController {
     public String search(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
         List<User> foundUsers = new ArrayList<> ();
 
-        if (imie.isEmpty() && nazwisko.isEmpty() && wiek.isEmpty ())
+        if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
             return "Musisz podać dane użytkownika, którego chcesz znaleźć";
-        else if (!"".equals (imie)) {foundUsers = searchByFirstName (imie);}
-        else if (!"".equals (nazwisko)) {foundUsers = searchByLastName (nazwisko);}
-        else if (!"".equals (wiek)) {foundUsers = searchByAge (wiek);}
+        else if (!imie.isEmpty ()) {
+            foundUsers = searchByFirstName (imie);
+        } else if (!nazwisko.isEmpty ()) {
+            foundUsers = searchByLastName (nazwisko);
+        } else if (!wiek.isEmpty ()) {
+            foundUsers = searchByAge (wiek);
+        }
 
         if (foundUsers.isEmpty ())
             return "Nie znaleziono tego użytkownika..";
@@ -62,15 +65,15 @@ public class UserController {
     public String remove(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
         List<User> removedUsers = new ArrayList<> ();
 
-        if (imie.isEmpty() && nazwisko.isEmpty() && wiek.isEmpty ())
+        if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
             return "Nie podałeś danych!";
-        else if (!"".equals (imie)) {
+        else if (!imie.isEmpty ()) {
             removedUsers = searchByFirstName (imie);
             removeUserFromList (removedUsers);
-        } else if (!"".equals (nazwisko)) {
+        } else if (!nazwisko.isEmpty ()) {
             removedUsers = searchByLastName (nazwisko);
             removeUserFromList (removedUsers);
-        } else if (!"".equals (wiek)) {
+        } else if (!wiek.isEmpty ()) {
             removedUsers = searchByAge (wiek);
             removeUserFromList (removedUsers);
         }
@@ -78,7 +81,7 @@ public class UserController {
         if (removedUsers.isEmpty ())
             return "Nie znaleziono tego użytkownika..";
         else
-            return "Użytkownik został usunięty! " +removedUsers;
+            return "Użytkownik został usunięty! " + removedUsers;
     }
 
     private List<User> searchByAge(String wiek) {
