@@ -52,21 +52,16 @@ public class UserController {
         return removeUsersByAttributes (imie, nazwisko, wiek);
     }
 
-
     private String searchUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
         List<User> foundUsers = new ArrayList<> ();
 
         if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
             return "Musisz podać dane użytkownika, którego chcesz znaleźć";
-        else if (!imie.isEmpty ())
-            foundUsers = searchByFirstName (imie);
-        else if (!nazwisko.isEmpty ())
-            foundUsers = searchByLastName (nazwisko);
-        else if (!wiek.isEmpty ())
-            foundUsers = searchByAge (wiek);
+        else if (!imie.isEmpty ()) foundUsers = searchByFirstName (imie);
+        else if (!nazwisko.isEmpty ()) foundUsers = searchByLastName (nazwisko);
+        else if (!wiek.isEmpty ()) foundUsers = searchByAge (wiek);
 
-        if (foundUsers.isEmpty ())
-            return "Nie znaleziono tego użytkownika..";
+        if (foundUsers.isEmpty ()) return "Nie znaleziono tego użytkownika..";
         else return "Użytkownik został znaleziony!<br/> " + foundUsers;
     }
 
@@ -86,8 +81,7 @@ public class UserController {
             removeUserFromList (removedUsers);
         }
 
-        if (removedUsers.isEmpty ())
-            return "Nie znaleziono tego użytkownika..";
+        if (removedUsers.isEmpty ()) return "Nie znaleziono tego użytkownika..";
         else return "Użytkownik został usunięty! " + removedUsers;
     }
 
