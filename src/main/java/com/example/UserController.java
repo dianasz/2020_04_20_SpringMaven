@@ -43,8 +43,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/search")
     public String search(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
-        List<User> foundUsers = new ArrayList<> ();
-        return searchUsersByAttributes (imie, nazwisko, wiek, foundUsers);
+        return searchUsersByAttributes (imie, nazwisko, wiek);
     }
 
     @ResponseBody
@@ -54,7 +53,9 @@ public class UserController {
     }
 
 
-    private String searchUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek, List<User> foundUsers) {
+    private String searchUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
+        List<User> foundUsers = new ArrayList<> ();
+
         if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
             return "Musisz podać dane użytkownika, którego chcesz znaleźć";
         else if (!imie.isEmpty ())
