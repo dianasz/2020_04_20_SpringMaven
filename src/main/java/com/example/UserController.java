@@ -44,25 +44,32 @@ public class UserController {
     @RequestMapping("/search")
     public String search(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
         List<User> foundUsers = new ArrayList<> ();
+        return searchUsersByAttributes (imie, nazwisko, wiek, foundUsers);
+    }
 
+    @ResponseBody
+    @RequestMapping("/remove")
+    public String remove(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
+        return removeUsersByAttributes (imie, nazwisko, wiek);
+    }
+
+
+    private String searchUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek, List<User> foundUsers) {
         if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
             return "Musisz podać dane użytkownika, którego chcesz znaleźć";
-        else if (!imie.isEmpty ()) {
+        else if (!imie.isEmpty ())
             foundUsers = searchByFirstName (imie);
-        } else if (!nazwisko.isEmpty ()) {
+        else if (!nazwisko.isEmpty ())
             foundUsers = searchByLastName (nazwisko);
-        } else if (!wiek.isEmpty ()) {
+        else if (!wiek.isEmpty ())
             foundUsers = searchByAge (wiek);
-        }
 
         if (foundUsers.isEmpty ())
             return "Nie znaleziono tego użytkownika..";
         else return "Użytkownik został znaleziony!<br/> " + foundUsers;
     }
 
-    @ResponseBody
-    @RequestMapping("/remove")
-    public String remove(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
+    private String removeUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
         List<User> removedUsers = new ArrayList<> ();
 
         if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
