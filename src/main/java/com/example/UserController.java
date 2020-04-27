@@ -43,83 +43,15 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/search")
     public String search(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
-        return searchUsersByAttributes (imie, nazwisko, wiek);
+        return userRepository.searchUsersByAttributes (imie, nazwisko, wiek);
     }
 
     @ResponseBody
     @RequestMapping("/remove")
     public String remove(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
-        return removeUsersByAttributes (imie, nazwisko, wiek);
+        return userRepository.removeUsersByAttributes (imie, nazwisko, wiek);
     }
 
-    private String searchUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
-        List<User> foundUsers = new ArrayList<> ();
 
-        if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
-            return "Musisz podać dane użytkownika, którego chcesz znaleźć";
-        else if (!imie.isEmpty ()) foundUsers = searchByFirstName (imie);
-        else if (!nazwisko.isEmpty ()) foundUsers = searchByLastName (nazwisko);
-        else if (!wiek.isEmpty ()) foundUsers = searchByAge (wiek);
-
-        if (foundUsers.isEmpty ()) return "Nie znaleziono tego użytkownika..";
-        else return "Użytkownik został znaleziony!<br/> " + foundUsers;
-    }
-
-    private String removeUsersByAttributes(@RequestParam(required = false) String imie, @RequestParam(required = false) String nazwisko, @RequestParam(required = false) String wiek) {
-        List<User> removedUsers = new ArrayList<> ();
-
-        if (imie.isEmpty () && nazwisko.isEmpty () && wiek.isEmpty ())
-            return "Musisz podać dane użytkownika, którego chcesz usunąć";
-        else if (!imie.isEmpty ()) {
-            removedUsers = searchByFirstName (imie);
-            removeUserFromList (removedUsers);
-        } else if (!nazwisko.isEmpty ()) {
-            removedUsers = searchByLastName (nazwisko);
-            removeUserFromList (removedUsers);
-        } else if (!wiek.isEmpty ()) {
-            removedUsers = searchByAge (wiek);
-            removeUserFromList (removedUsers);
-        }
-
-        if (removedUsers.isEmpty ()) return "Nie znaleziono tego użytkownika..";
-        else return "Użytkownik został usunięty! " + removedUsers;
-    }
-
-    private List<User> searchByAge(String wiek) {
-        List<User> users = userRepository.getAll ();
-        List<User> foundUsers = new ArrayList<> ();
-        int wiekInt = Integer.parseInt (wiek);
-        for (User user : users) {
-            if (user.getWiek () == wiekInt)
-                foundUsers.add (user);
-        }
-        return foundUsers;
-    }
-
-    private List<User> searchByLastName(String nazwisko) {
-        List<User> users = userRepository.getAll ();
-        List<User> foundUsers = new ArrayList<> ();
-        for (User user : users) {
-            if (user.getNazwisko ().equalsIgnoreCase (nazwisko))
-                foundUsers.add (user);
-        }
-        return foundUsers;
-    }
-
-    private List<User> searchByFirstName(String imie) {
-        List<User> users = userRepository.getAll ();
-        List<User> foundUsers = new ArrayList<> ();
-        for (User user : users) {
-            if (user.getImie ().equalsIgnoreCase (imie))
-                foundUsers.add (user);
-        }
-        return foundUsers;
-
-    }
-
-    private void removeUserFromList(List<User> removedUsers) {
-        for (User user : removedUsers)
-            userRepository.remove (user);
-    }
 
 }
