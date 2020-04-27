@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -67,36 +70,32 @@ public class UserRepository {
     }
 
     private List<User> searchByAge(String wiek) {
-        List<User> foundUsers = new ArrayList<> ();
+        List<User> foundUsers;
         int wiekInt = Integer.parseInt (wiek);
-        for (User user : users) {
-            if (user.getWiek () == wiekInt)
-                foundUsers.add (user);
-        }
+        foundUsers = users.stream ().
+                filter (user -> user.getWiek () == wiekInt)
+                .collect (Collectors.toList ());
         return foundUsers;
     }
 
     private List<User> searchByLastName(String nazwisko) {
-        List<User> foundUsers = new ArrayList<> ();
-        for (User user : users) {
-            if (user.getNazwisko ().equalsIgnoreCase (nazwisko))
-                foundUsers.add (user);
-        }
+        List<User> foundUsers = users.stream ()
+                .filter (user -> user.getNazwisko ()
+                .equalsIgnoreCase (nazwisko))
+                .collect (Collectors.toList ());
         return foundUsers;
     }
 
     private List<User> searchByFirstName(String imie) {
-        List<User> foundUsers = new ArrayList<> ();
-        for (User user : users) {
-            if (user.getImie ().equalsIgnoreCase (imie))
-                foundUsers.add (user);
-        }
+        List<User> foundUsers = users.stream ()
+                .filter (user -> user.getImie ()
+                .equalsIgnoreCase (imie))
+                .collect (Collectors.toList ());
         return foundUsers;
 
     }
 
     private void removeUserFromList(List<User> removedUsers) {
-        for (User user : removedUsers)
-            users.remove (user);
+        removedUsers.forEach (user -> users.remove (user));
     }
 }
